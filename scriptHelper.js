@@ -3,17 +3,18 @@ try{require('isomorphic-fetch');}catch(error){};
 
 function addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl) {
    // Here is the HTML formatting for our mission target div.
-   /*
+   const div = document.getElementById("missionTarget");
+    div.innerHTML = ` 
                 <h2>Mission Destination</h2>
                 <ol>
-                    <li>Name: </li>
-                    <li>Diameter: </li>
+                    <li>Name: ${name} </li>
+                    <li>Diameter: ${diameter} </li>
                     <li>Star: ${star}</li>
-                    <li>Distance from Earth: </li>
-                    <li>Number of Moons: </li>
+                    <li>Distance from Earth: ${distance} </li>
+                    <li>Number of Moons: ${moons} </li>
                 </ol>
-                <img src="">
-   */
+                <img src= ${imageUrl}>
+   `;
 }
 
 function validateInput(testInput) {
@@ -60,11 +61,9 @@ if(pilotData==="Is a Number" || copilotData==="Is a Number" || fuelData==="Not a
 }
 if (pilotData === "Not a Number"){
     pilotStatus.innerHTML = `Pilot ${pilot} is ready for launch`;
-    
 }
 if (copilotData === "Not a Number"){
     copilotStatus.innerHTML = `Co-pilot ${copilot} is ready for launch`;
-    
 }
 if(fuelLevel < 10000){
     status.innerHTML = "Shuttle Not Ready for Launch";  
@@ -91,20 +90,24 @@ if (pilotStatus.innerHTML.includes("is ready") && copilotStatus.innerHTML.includ
 
 list.style.visibility = "visible";
 
-
 }
 
-// async function myFetch() {
-//     let planetsReturned;
+async function myFetch() {
+    let planetsReturned;
 
-//     planetsReturned = await fetch().then( function(response) {
-//         });
+    planetsReturned = await fetch("https://handlers.education.launchcode.org/static/planets.json").then(response => response.json()).then(function(json){
+            return json; 
+        });
+    return planetsReturned;
+}
 
-//     return planetsReturned;
-// }
+function pickPlanet(planets) {
+    let randomNumber = Math.floor(Math.random()*6); 
+    let randomPlanet = planets[randomNumber];
+    return randomPlanet; 
+}
 
-// function pickPlanet(planets) {
-// }
+
 try{
 module.exports.addDestinationInfo = addDestinationInfo;
 module.exports.validateInput = validateInput;
